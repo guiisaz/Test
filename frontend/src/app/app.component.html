@@ -1,0 +1,42 @@
+<html>
+  <body>
+    <main>
+      <div class="box" id="heading">
+        <h1>{{ listTitle }}</h1>
+      </div>
+      <div class="box">
+        <div *for="let item of listItems" class="item">
+      
+          <form (ngSubmit)="onDeleteItem(item.id)">
+            <input type="checkbox" (change)="onDeleteItem(item.id)" name="deleteItemId" [value]="item.id">
+          </form>
+      
+      
+          <p [hidden]="item.editing" id="title{{item.id}}">{{ item.title }}</p>
+      
+      
+          <form [hidden]="!item.editing" (ngSubmit)="onUpdateItem(item.id, item.title)">
+            <input type="hidden" name="updatedItemId" [value]="item.id">
+            <input id="input{{item.id}}" type="text" [(ngModel)]="item.title" name="updatedItemTitle" autocomplete="off" autofocus>
+            <button id="done{{item.id}}" class="edit" type="submit">
+              <img class="icon" src="/assets/icons/check-solid.svg" alt="tick image">
+            </button>
+          </form>
+      
+      
+          <button [hidden]="item.editing" id="edit{{item.id}}" class="edit" (click)="onEditItem(item.id)">
+            <img class="icon" src="/assets/icons/pencil-solid.svg" alt="pencil image">
+          </button>
+        </div>
+      
+      
+        <form class="item" (ngSubmit)="onAddItem()">
+          <input type="text" [(ngModel)]="newItemTitle" name="newItem" placeholder="New Item" autocomplete="off" autofocus>
+          <button class="add" type="submit" name="list" [value]="listTitle">+</button>
+        </form>
+      </div>
+    </main>
+  </body>
+</html>
+
+<router-outlet />
