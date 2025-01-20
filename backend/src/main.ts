@@ -1,18 +1,27 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import { join } from 'path';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import { join } from 'path';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  const port = 4200;
 
-  app.useStaticAssets(join(__dirname, '..', 'public'));
-  app.setBaseViewsDir(join(__dirname, '..', 'public'));
-  app.setViewEngine('html');
+  app.enableCors();
 
-  await app.listen(port);
-  console.log(`Servidor rodando na porta ${port}`);
+
+  const frontendDistPath = join(__dirname, '..', '..', '..', 'frontend', 'src', 'app');
+  const frontendCSSPath = join(__dirname, '..', '..', '..', 'frontend', 'src', 'app')
+  app.useStaticAssets(frontendCSSPath);
+  app.setBaseViewsDir(frontendDistPath);
+
+
+  app.use((req, res) => {
+    res.sendFile(join(frontendDistPath, 'app.component.html'));
+    res.sendFile(join(frontendCSSPath, 'app.component.css'))
+  });
+
+  await app.listen(4200);
+  console.log(`Backend está rodando na porta 4200`);
 }
 bootstrap();
