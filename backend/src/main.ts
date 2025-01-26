@@ -21,7 +21,7 @@ async function bootstrap() {
     res.sendFile(join(frontendCSSPath, 'app.component.css'))
   });
 
-  await app.listen(4200);
-  console.log(`Backend está rodando na porta 4200`);
+  await app.listen(3000);
+  console.log(`Server running in port 3000.`);
 }
 bootstrap();

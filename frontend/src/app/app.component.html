@@ -7,7 +7,7 @@
       <div class="box">
         <div *for="let item of listItems" class="item">
       
-          <form (ngSubmit)="onDeleteItem(item.id)">
+          <form (ngSubmit)="onDeleteItem(item.id)" action="/delete" method="post">
             <input type="checkbox" (change)="onDeleteItem(item.id)" name="deleteItemId" [value]="item.id">
           </form>
       
@@ -15,7 +15,7 @@
           <p [hidden]="item.editing" id="title{{item.id}}">{{ item.title }}</p>
       
       
-          <form [hidden]="!item.editing" (ngSubmit)="onUpdateItem(item.id, item.title)">
+          <form [hidden]="!item.editing" (ngSubmit)="onUpdateItem(item.id, item.title)" action="/edit" method="post">
             <input type="hidden" name="updatedItemId" [value]="item.id">
             <input id="input{{item.id}}" type="text" [(ngModel)]="item.title" name="updatedItemTitle" autocomplete="off" autofocus>
             <button id="done{{item.id}}" class="edit" type="submit">
@@ -30,7 +30,7 @@
         </div>
       
       
-        <form class="item" (ngSubmit)="onAddItem()">
+        <form class="item" (ngSubmit)="onAddItem()" action="/add" method="post">
           <input type="text" [(ngModel)]="newItemTitle" name="newItem" placeholder="New Item" autocomplete="off" autofocus>
           <button class="add" type="submit" name="list" [value]="listTitle">+</button>
         </form>
