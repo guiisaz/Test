@@ -1,42 +1,37 @@
-<html>
-  <body>
-    <main>
+<main>
+  <html>
+    <body>
       <div class="box" id="heading">
-        <h1>{{ listTitle }}</h1>
+        <h1>
+          TODO-list
+        </h1>
       </div>
       <div class="box">
-        <div *for="let item of listItems" class="item">
-      
-          <form (ngSubmit)="onDeleteItem(item.id)" action="/delete" method="post">
-            <input type="checkbox" (change)="onDeleteItem(item.id)" name="deleteItemId" [value]="item.id">
-          </form>
-      
-      
-          <p [hidden]="item.editing" id="title{{item.id}}">{{ item.title }}</p>
-      
-      
-          <form [hidden]="!item.editing" (ngSubmit)="onUpdateItem(item.id, item.title)" action="/edit" method="post">
-            <input type="hidden" name="updatedItemId" [value]="item.id">
-            <input id="input{{item.id}}" type="text" [(ngModel)]="item.title" name="updatedItemTitle" autocomplete="off" autofocus>
-            <button id="done{{item.id}}" class="edit" type="submit">
-              <img class="icon" src="/assets/icons/check-solid.svg" alt="tick image">
-            </button>
-          </form>
-      
-      
-          <button [hidden]="item.editing" id="edit{{item.id}}" class="edit" (click)="onEditItem(item.id)">
-            <img class="icon" src="/assets/icons/pencil-solid.svg" alt="pencil image">
-          </button>
-        </div>
-      
-      
-        <form class="item" (ngSubmit)="onAddItem()" action="/add" method="post">
-          <input type="text" [(ngModel)]="newItemTitle" name="newItem" placeholder="New Item" autocomplete="off" autofocus>
-          <button class="add" type="submit" name="list" [value]="listTitle">+</button>
+            <div class="item">
+              <form action="/delete" method="post">
+                <input type="checkbox" onchange="this.form.submit()" name="deleteItemId" value="<%= item.id %>">
+              </form>
+  
+              <p id="title<%=item.id%>">
+                <%= item.title %>
+              </p>
+  
+              <form class="edit" action="/edit" method="post">
+                <input type="hidden" name="updatedItemId" value="<%= item.id %>">
+                <input id="input<%=item.id%>" type="text" name="updatedItemTitle" value="<%= item.title %>" autocomplete="off"
+                       autofocus="autofocus" hidden="hidden" />
+                <button id="done<%=item.id%>" class="edit" type="submit" hidden><img class="icon"
+                    src="/assets/icons/check-solid.svg" alt="tick image"></button>
+              </form>
+              <button id="edit<%=item.id%>" class="edit" onclick="handler('<%=item.id%>')"><img class="icon"
+                  src="/assets/icons/pencil-solid.svg" alt="pencil image"></button>
+            </div>
+  
+        <form class="item" action="/add" method="post">
+          <input type="text" name="newItem" placeholder="New Item" autocomplete="off" autofocus="true" />
+          <button class="add" type="submit" name="list" value="TODO-list" >+</button>
         </form>
       </div>
-    </main>
-  </body>
-</html>
-
-<router-outlet />
+    </body>
+  </html>
+</main>
