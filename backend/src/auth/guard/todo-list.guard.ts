@@ -21,7 +21,6 @@ export class TodoListGuard {
     async isPermissionGranted(){
         if (await this.getToken() === true) {
             console.log("User authenthicated, permissions granted.") // Funcao que eu queria analisar o resultado do getToken e entao caso nao tivesse token (n fosse autenticado), retirasse as permissoes do usuário de mexer na todo-list, e caso tivesse token (caso fosse autenticado), pudesse mexer livremente na lista
-            return true
         } else {
             console.log("User not authenthicated, permissions not granted.")
         }
