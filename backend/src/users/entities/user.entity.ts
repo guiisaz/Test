@@ -24,6 +24,9 @@ export class User extends Model {
   @Column
   token: string;
 
+  @Column
+  isAdmin: boolean;
+
   @BeforeUpdate
   @BeforeCreate
   static hashPassword(user: User) {
@@ -31,4 +34,13 @@ export class User extends Model {
       user.password = bcrypt.hashSync(user.password, 10);
     }
   }
+}
+
+
+export enum Action {
+  Manage = 'manage',
+  Create = 'create',
+  Read = 'read',
+  Update = 'update',
+  Delete = 'delete',
 }
