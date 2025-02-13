@@ -8,10 +8,10 @@ import { CaslModule } from './casl/casl.module';
   imports: [
     SequelizeModule.forRoot({
       dialect: 'postgres',
-      database: 'postgres',
+      database: 'sequelize',
       host: 'localhost',
-      username: 'postgres',
-      password: '84657780',
+      username: 'todo',
+      password: '123',
       logging: (q) => console.log(q),
       autoLoadModels: true,
       synchronize: true,
