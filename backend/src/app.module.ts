@@ -3,6 +3,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { CaslModule } from './casl/casl.module';
+import { TodoModule } from './todo/todo.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { CaslModule } from './casl/casl.module';
     UsersModule,
     AuthModule,
     CaslModule,
+    TodoModule,
   ],
   controllers: [],
   providers: [],

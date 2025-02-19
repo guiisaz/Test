@@ -43,7 +43,11 @@ export class AuthService {
     const token = this.jwtService.sign(payload);
     const isAdmin = true
 
-    await user.update({ token, isAdmin });
+    await user.update({ token, isAdmin }, {
+      where: {
+        id: user.id
+      }
+    });
 
     return user.reload();
   }
