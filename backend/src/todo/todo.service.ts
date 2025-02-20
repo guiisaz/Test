@@ -1,20 +1,32 @@
-import { Injectable, Param } from '@nestjs/common';
+import { Injectable, Param, UnauthorizedException } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Todo } from './entities/todo.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Injectable()
 export class TodoService {
-  constructor(@InjectModel(Todo) private todoModel: typeof Todo ) {}
+  constructor(@InjectModel(Todo) private todoModel: typeof Todo,
+  @InjectModel(User) private userModel: typeof User ) {}
 
+  async create(dto: CreateTodoDto, email: string) {
+    const user = await this.userModel.findOne({ where: { email }})
 
-  async create(dto: CreateTodoDto) {
+    if (!user) {
+      throw new UnauthorizedException("You don't have the permissions to create a new list item.")
+    }
     const todo = await this.todoModel.create({
       title: dto.title
     })
 
-    return todo;
+    console.log(user.token)
+
+    if (user.token === user.token) {
+      return todo
+    } else {
+      throw new UnauthorizedException("Bearer Token empty.")
+    }
   }
 
   async findAll() {

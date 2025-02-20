@@ -8,8 +8,8 @@ export class TodoController {
   constructor(private readonly todoService: TodoService) {}
 
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todoService.create(createTodoDto);
+  create(@Body() createTodoDto: CreateTodoDto, email: string) {
+    return this.todoService.create(createTodoDto, email);
   }
 
   @Get()
