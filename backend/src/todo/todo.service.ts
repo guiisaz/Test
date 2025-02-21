@@ -4,28 +4,36 @@ import { UpdateTodoDto } from './dto/update-todo.dto';
 import { InjectModel } from '@nestjs/sequelize';
 import { Todo } from './entities/todo.entity';
 import { User } from 'src/users/entities/user.entity';
+import { DeleteTodoDto } from './dto/delete-todo.dto';
 
 @Injectable()
 export class TodoService {
   constructor(@InjectModel(Todo) private todoModel: typeof Todo,
   @InjectModel(User) private userModel: typeof User ) {}
 
-  async create(dto: CreateTodoDto, email: string) {
-    const user = await this.userModel.findOne({ where: { email }})
+
+  async checkUser(email: string) {
+    const user = await this.userModel.findOne({ where: { email } });
 
     if (!user) {
-      throw new UnauthorizedException("You don't have the permissions to create a new list item.")
+      return false;
+    } else if (user.token) {
+      return true;
     }
+  }
+  async create(dto: CreateTodoDto) {
+    const email = dto.email
+    const user = await this.checkUser(email)
+    
+    
     const todo = await this.todoModel.create({
       title: dto.title
     })
 
-    console.log(user.token)
-
-    if (user.token === user.token) {
+    if (!user) {
+      throw new UnauthorizedException("You don't have the permissions to create a new list item or you didn't insert your email.")
+    } else if (user) {
       return todo
-    } else {
-      throw new UnauthorizedException("Bearer Token empty.")
     }
   }
 
@@ -44,16 +52,33 @@ export class TodoService {
   }
 
   async update(@Param("id") id: number, dto: UpdateTodoDto) {
+    const email = dto.email
+    const user = await this.checkUser(email)
+    
     const todo = await this.todoModel.update({ title: dto.title }, { 
       where: {
         id 
       }
     })
-    return todo;
+
+    if (!user) {
+      throw new UnauthorizedException("You don't have the permissions to create a new list item or you didn't insert your email.")
+    } else if (user) {
+      return todo
+    }
+    
   }
 
-  async remove(@Param("id") id: number) {
+  async remove(@Param("id") id: number, dto: DeleteTodoDto) {
+
+    const email = dto.email
+    const user = await this.checkUser(email)
+
     const todo = await this.todoModel.destroy({ where: { id } })
-    return todo;
+    if (!user) {
+      throw new UnauthorizedException("You don't have the permissions to create a new list item or you didn't insert your email.")
+    } else if (user) {
+      return todo
+    }
   }
 }
