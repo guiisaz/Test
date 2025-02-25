@@ -4,6 +4,4 @@ import { IsString } from 'class-validator';
 
 export class DeleteTodoDto extends PartialType(CreateTodoDto) {
 
-    @IsString()
-    email: string;
 }

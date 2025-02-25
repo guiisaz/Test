@@ -8,6 +8,4 @@ export class UpdateTodoDto extends PartialType(CreateTodoDto) {
     @IsNotEmpty()
     title: string;
 
-    @IsString()
-    email: string;
 }
