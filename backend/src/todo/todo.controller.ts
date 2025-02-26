@@ -2,8 +2,9 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@n
 import { TodoService } from './todo.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
-import { DeleteTodoDto } from './dto/delete-todo.dto';
 import { AuthGuard } from './guard/auth.guard';
+import { Auth } from 'src/users/decorators/auth.decorator';
+import { User } from 'src/users/entities/user.entity';
 
 @Controller('todo')
 export class TodoController {
@@ -12,8 +13,8 @@ export class TodoController {
 
   @UseGuards(AuthGuard)
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todoService.create(createTodoDto);
+  create(@Body() createTodoDto: CreateTodoDto, @Auth() user: User) {
+    return this.todoService.create(createTodoDto, user);
   }
 
   @Get()
@@ -28,13 +29,13 @@ export class TodoController {
 
   @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateTodoDto) {
-    return this.todoService.update(+id, dto);
+  update(@Param('id') id: string, @Body() dto: UpdateTodoDto, @Auth() user: User) {
+    return this.todoService.update(+id, dto, user);
   }
 
   @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todoService.remove(+id);
+  remove(@Param('id') id: string, @Auth() user: User) {
+    return this.todoService.remove(+id, user);
   }
 }

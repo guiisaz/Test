@@ -4,8 +4,10 @@ import {
   Column,
   BeforeUpdate,
   BeforeCreate,
+  HasMany,
 } from 'sequelize-typescript';
 import * as bcrypt from 'bcrypt';
+import { Todo } from 'src/todo/entities/todo.entity';
 
 @Table({
   tableName: 'users',
@@ -26,6 +28,9 @@ export class User extends Model {
 
   @Column
   isAdmin: boolean;
+
+  @HasMany(() => Todo)
+  todo: Todo;
 
   @BeforeUpdate
   @BeforeCreate

@@ -17,6 +17,6 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   @Get('me')
   getMyProfile(@Auth() user: User) {
-    return user;
+    return this.usersService.returnuser(user)
   }
 }
